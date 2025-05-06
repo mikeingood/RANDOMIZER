@@ -1,6 +1,5 @@
 const words = [
-  "огонь", "сцена", "поток", "харизма", "сила",
-  "деньги", "уверенность", "взлет", "ритм", "кач"
+"кач"
 ];
 function getRandomWord() {
   const index = Math.floor(Math.random() * words.length);
