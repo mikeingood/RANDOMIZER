@@ -102,10 +102,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  // Подключение к Supabase
   const supabase = supabase.createClient(
-    "https://ijzgdyuwkctfjpiiettz.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqemdkeXV3a2N0ZmpwaWlldHR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY1MjMzMzYsImV4cCI6MjA2MjA5OTMzNn0.txrqE69X-NH3AetDPAlpBRbFZall3muL2J2l6imKWhs"
+    "https://ijzgdyuwkctfjpiiettz.supabase.co",  // <-- заменяешь на свой API URL
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqemdkeXV3a2N0ZmpwaWlldHR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY1MjMzMzYsImV4cCI6MjA2MjA5OTMzNn0.txrqE69X-NH3AetDPAlpBRbFZall3muL2J2l6imKWhs"               // <-- заменяешь на свой публичный ключ
   );
+
+  // Проверка пароля
+  const PASSWORD = "secret123";  // <-- здесь задаёшь свой пароль
 
   async function submitWords() {
     const password = document.getElementById("password").value;
@@ -114,11 +118,13 @@
       .map(w => w.trim())
       .filter(Boolean);
 
-    if (password !== "secret123") {
+    // Проверка на правильность пароля
+    if (password !== PASSWORD) {
       document.getElementById("status").textContent = "Неверный пароль";
       return;
     }
 
+    // Очистка таблицы и добавление новых слов в базу данных
     await supabase.from("words").delete().neq("id", 0); // Очистить таблицу
     for (const word of words) {
       await supabase.from("words").insert({ word });
@@ -127,6 +133,7 @@
     document.getElementById("status").textContent = "Слова сохранены";
   }
 
+  // Загрузка слов из базы данных
   async function loadWords() {
     const { data, error } = await supabase.from("words").select("word");
     if (data) {
@@ -134,7 +141,7 @@
     }
   }
 
-  window.onload = loadWords;
+  window.onload = loadWords;  // Загружаем слова при открытии страницы
 </script>
 </body>
 </html>
