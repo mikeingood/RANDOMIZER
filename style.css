@@ -1,5 +1,5 @@
 body {
-  background-color: #111;
+  background-color: #000;
   color: #fff;
   font-family: 'Arial', sans-serif;
   display: flex;
@@ -8,24 +8,27 @@ body {
   height: 100vh;
   margin: 0;
 }
+
 .container {
   text-align: center;
   width: 90%;
 }
+
 #word {
-  font-size: clamp (30px, 10vw, 100px);
+  font-size: clamp(30px, 10vw, 100px);
   margin-bottom: 30px;
   line-height: 1.2;
   word-wrap: break-word;
 }
+
 button {
   font-size: clamp(16px, 4vw, 36px);
   padding: 10px 20px;
-  cursor: pointer;
   background-color: #444;
   color: #fff;
   border: none;
   border-radius: 8px;
+  cursor: pointer;
 }
 button:hover {
   background-color: #666;
