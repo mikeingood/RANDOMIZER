@@ -9,6 +9,11 @@
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 50px;
+      background-color: #f4f4f9;
+    }
+
+    h1 {
+      color: #333;
     }
 
     input, textarea {
@@ -17,6 +22,9 @@
       margin: 10px;
       width: 80%;
       max-width: 600px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
     }
 
     button {
@@ -26,6 +34,8 @@
       color: white;
       border: none;
       cursor: pointer;
+      border-radius: 5px;
+      margin-top: 20px;
     }
 
     button:hover {
@@ -89,6 +99,7 @@
         }
 
         document.getElementById("status").textContent = "Слова успешно сохранены!";
+        document.getElementById("wordList").value = '';  // Очистить поле после успешного сохранения
       } catch (error) {
         console.error("Ошибка при добавлении слов:", error);
         document.getElementById("status").textContent = `Ошибка: ${error.message}`;
