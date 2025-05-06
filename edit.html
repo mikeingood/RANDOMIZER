@@ -1,57 +1,114 @@
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  // Подключение к Supabase
-  const supabase = supabase.createClient(
-    "https://ijzgdyuwkctfjpiiettz.supabase.co",  // <-- заменяешь на свой API URL
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqemdkeXV3a2N0ZmpwaWlldHR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY1MjMzMzYsImV4cCI6MjA2MjA5OTMzNn0.txrqE69X-NH3AetDPAlpBRbFZall3muL2J2l6imKWhs"               // <-- заменяешь на свой публичный ключ
-  );
-
-  const PASSWORD = "secret123";  // Пароль для доступа
-
-  async function submitWords() {
-    const password = document.getElementById("password").value;
-    const words = document.getElementById("wordList").value
-      .split("\n")
-      .map(w => w.trim())
-      .filter(Boolean);
-
-    // Проверка пароля
-    if (password !== PASSWORD) {
-      document.getElementById("status").textContent = "Неверный пароль";
-      return;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Редактор слов</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
     }
 
-    try {
-      // Очистка текущих слов в таблице
-      let { data, error } = await supabase.from("words").delete().neq("id", 0);
-      if (error) throw new Error(error.message);
-      console.log("Удалены старые записи:", data);
+    input, textarea {
+      padding: 10px;
+      font-size: 18px;
+      margin: 10px;
+      width: 80%;
+      max-width: 600px;
+    }
 
-      // Добавление новых слов в базу
-      for (const word of words) {
-        const { data, error } = await supabase.from("words").insert({ word });
-        if (error) throw new Error(error.message);
-        console.log("Добавлено слово:", data);
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-size: 18px;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Редактор слов для Рандомайзера</h1>
+
+  <input type="password" id="password" placeholder="Введите пароль" />
+  <textarea id="wordList" rows="10" placeholder="Введите слова, разделённые новой строкой"></textarea>
+
+  <br/>
+  <button onclick="submitWords()">Сохранить слова</button>
+
+  <p id="status"></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Подключаемся к Supabase
+    const supabase = supabase.createClient(
+      "https://ijzgdyuwkctfjpiiettz.supabase.co",  // <-- заменяешь на свой API URL
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqemdkeXV3a2N0ZmpwaWlldHR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY1MjMzMzYsImV4cCI6MjA2MjA5OTMzNn0.txrqE69X-NH3AetDPAlpBRbFZall3muL2J2l6imKWhs"               // <-- заменяешь на свой публичный ключ
+    );
+
+    const PASSWORD = "secret123";  // Пароль для доступа
+
+    // Функция для добавления/обновления слов в базе данных
+    async function submitWords() {
+      const password = document.getElementById("password").value;
+      const words = document.getElementById("wordList").value
+        .split("\n")
+        .map(w => w.trim())
+        .filter(Boolean);
+
+      // Проверка пароля
+      if (password !== PASSWORD) {
+        document.getElementById("status").textContent = "Неверный пароль";
+        return;
       }
 
-      document.getElementById("status").textContent = "Слова успешно сохранены!";
-    } catch (error) {
-      console.error("Ошибка при добавлении слов:", error);
-      document.getElementById("status").textContent = `Ошибка: ${error.message}`;
-    }
-  }
+      try {
+        // Очистка текущих слов в таблице
+        let { data, error } = await supabase.from("words").delete().neq("id", 0);
+        if (error) throw new Error(error.message);
+        console.log("Удалены старые записи:", data);
 
-  // Загрузка слов из базы данных
-  async function loadWords() {
-    const { data, error } = await supabase.from("words").select("word");
-    if (error) {
-      console.error("Ошибка загрузки слов:", error);
-      return;
-    }
-    if (data) {
-      document.getElementById("wordList").value = data.map(row => row.word).join("\n");
-    }
-  }
+        // Добавление новых слов в базу данных
+        for (const word of words) {
+          const { data, error } = await supabase.from("words").insert({ word });
+          if (error) throw new Error(error.message);
+          console.log("Добавлено слово:", data);
+        }
 
-  window.onload = loadWords;  // Загружаем слова при открытии страницы
-</script>
+        document.getElementById("status").textContent = "Слова успешно сохранены!";
+      } catch (error) {
+        console.error("Ошибка при добавлении слов:", error);
+        document.getElementById("status").textContent = `Ошибка: ${error.message}`;
+      }
+    }
+
+    // Функция для загрузки слов из базы данных
+    async function loadWords() {
+      const { data, error } = await supabase.from("words").select("word");
+      if (error) {
+        console.error("Ошибка загрузки слов:", error);
+        return;
+      }
+      if (data) {
+        document.getElementById("wordList").value = data.map(row => row.word).join("\n");
+      }
+    }
+
+    window.onload = loadWords;  // Загружаем слова при открытии страницы
+  </script>
+
+</body>
+</html>
