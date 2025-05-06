@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 exports.handler = async function (event) {
-  const PASSWORD = "secret123"; // измени на свой пароль
+  const PASSWORD = "mikeingood"; // измени на свой пароль
 
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Метод не поддерживается" };
