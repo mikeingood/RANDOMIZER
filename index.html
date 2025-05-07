@@ -11,5 +11,24 @@
     <button onclick="getRandomWord()">Рандом</button>
   </div>
   <script src="script.js"></script>
+<br>
+<button onclick="toggleBeat()">🎵 Бит</button>
+<audio id="beat" src="https://mikeingood.netlify.app/beat.mp3"></audio>
+
+<script>
+  const audio = document.getElementById('beat');
+  let isPlaying = false;
+
+  function toggleBeat() {
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    isPlaying = !isPlaying;
+  }
+</script>
+
+  
 </body>
 </html>
