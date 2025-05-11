@@ -1,13 +1,12 @@
-let words = [];
-
-fetch('words.txt')
+fetch('words2.txt')
   .then(response => response.text())
   .then(text => {
-    words = text.split('\n').map(w => w.trim()).filter(Boolean);
-  });
+    const words = text.split('\n').map(w => w.trim()).filter(Boolean);
+    const wordDiv = document.getElementById("word");
+    const button = document.getElementById("getRandomWord");
 
-function getRandomWord() {
-  if (words.length === 0) return;
-  const index = Math.floor(Math.random() * words.length);
-  document.getElementById('word').textContent = words[index];
-}
+    button.addEventListener("click", () => {
+      const random = Math.floor(Math.random() * words.length);
+      wordDiv.textContent = words[random];
+    });
+  });
