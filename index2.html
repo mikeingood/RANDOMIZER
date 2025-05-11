@@ -8,7 +8,7 @@
 <body>
   <div class="container">
     <div id="word">Нажми "Рандом"</div>
-    <div><button onclick="getRandomWord2()">🎲 Рандом</button> </div>
+    <div><button onclick="getRandomLine()">🎲 Рандом</button> </div>
     <div><button onclick="toggleBeat()">🎵 Бит</button></div>
     <div><a href="https://t.me/mikemakehappy_bot" target="_blank" class="fixed-button hidden">КУРС ПО ИМПРОВИЗАЦИИ</a></div>
   </div>
@@ -30,6 +30,16 @@
   }
 </script>
 
+<script>
+    async function getRandomLine() {
+      const res = await fetch('words2.txt');
+      const text = await res.text();
+      const lines = text.split('\n').filter(line => line.trim() !== '');
+      const random = lines[Math.floor(Math.random() * lines.length)];
+      document.getElementById('output').innerText = random;
+    }
+  </script>
+  
   <script>
   window.addEventListener("load", () => {
     setTimeout(() => {
